@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Menu, X, HeartHandshake, BookOpen, Users, Calendar, Phone, ChevronRight, Star, Quote, ArrowRight, Clock, Video, Shield, ChevronDown, Scale, Compass, Wallet, GraduationCap, Heart, Lock, ShieldCheck, Book, ChevronLeft, LayoutGrid, CalendarDays, CheckCircle2, Share2, Facebook, Twitter, Search } from 'lucide-react';
+import { Menu, X, HeartHandshake, BookOpen, Users, Calendar, Phone, ChevronRight, Star, Quote, ArrowRight, Clock, Video, Shield, ChevronDown, Scale, Compass, Wallet, GraduationCap, Heart, Lock, ShieldCheck, Book, ChevronLeft, LayoutGrid, CalendarDays, CheckCircle2, Share2, Facebook, Twitter, Search, Home, Play, Check, FileText, MonitorPlay, Award, Infinity, Sun, Moon, Bookmark } from 'lucide-react';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isSameMonth, addMonths, subMonths, getDay } from 'date-fns';
 import { articles, categoriesList } from './data/articles';
 
@@ -9,6 +9,27 @@ import { articles, categoriesList } from './data/articles';
 const Navbar = ({ onOpenUserProfile }: { onOpenUserProfile: () => void }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const isDarkMode = localStorage.getItem('theme') === 'dark' || 
+      (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    setIsDark(isDarkMode);
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    setIsDark(!isDark);
+    if (!isDark) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,61 +67,86 @@ const Navbar = ({ onOpenUserProfile }: { onOpenUserProfile: () => void }) => {
   };
 
   return (
-    <nav className="fixed w-full z-50 glass-panel transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          <div className="relative w-16 h-16 flex items-center justify-center cursor-pointer group shrink-0" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-            <HeartHandshake className="h-7 w-7 text-cyan-500 absolute z-10 group-hover:scale-110 transition-transform" />
-            <svg className="w-full h-full absolute animate-[spin_15s_linear_infinite]" viewBox="0 0 100 100">
-              <path id="circlePath" d="M 50, 50 m -34, 0 a 34,34 0 1,1 68,0 a 34,34 0 1,1 -68,0" fill="transparent" />
-              <text className="text-[14px] font-serif font-bold fill-red-500 uppercase">
-                <textPath href="#circlePath" startOffset="0%" textLength="213" lengthAdjust="spacing">
-                  MAWADDAH • MAWADDAH • 
-                </textPath>
-              </text>
-            </svg>
-          </div>
-          
-          <div className="hidden md:flex items-center space-x-8">
-            <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className={`text-sm font-medium uppercase tracking-wider transition-colors ${activeSection === 'about' ? 'text-accent' : 'text-primary/80 hover:text-accent'}`}>About Us</a>
-            <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className={`text-sm font-medium uppercase tracking-wider transition-colors ${activeSection === 'services' ? 'text-accent' : 'text-primary/80 hover:text-accent'}`}>Services</a>
-            <a href="#workshops" onClick={(e) => handleNavClick(e, 'workshops')} className={`text-sm font-medium uppercase tracking-wider transition-colors ${activeSection === 'workshops' ? 'text-accent' : 'text-primary/80 hover:text-accent'}`}>Workshops</a>
-            <a href="#resources" onClick={(e) => handleNavClick(e, 'resources')} className={`text-sm font-medium uppercase tracking-wider transition-colors ${activeSection === 'resources' ? 'text-accent' : 'text-primary/80 hover:text-accent'}`}>Resources</a>
-            <button onClick={onOpenUserProfile} className="text-primary/80 hover:text-accent transition-colors text-sm font-medium uppercase tracking-wider flex items-center gap-1"><Users className="w-4 h-4"/> Profile</button>
-            <a href="#booking" onClick={(e) => handleNavClick(e, 'booking')} className="bg-primary text-bg px-6 py-2.5 rounded-full text-sm font-medium hover:bg-primary-light transition-colors">
-              Book Consultation
-            </a>
-          </div>
+    <>
+      <nav className="fixed w-full z-50 glass-panel transition-all duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            <div className="relative w-16 h-16 flex items-center justify-center cursor-pointer group shrink-0" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <HeartHandshake className="h-7 w-7 text-cyan-500 absolute z-10 group-hover:scale-110 transition-transform" />
+              <svg className="w-full h-full absolute animate-[spin_15s_linear_infinite]" viewBox="0 0 100 100">
+                <path id="circlePath" d="M 50, 50 m -34, 0 a 34,34 0 1,1 68,0 a 34,34 0 1,1 -68,0" fill="transparent" />
+                <text className="text-[14px] font-serif font-bold fill-red-500 uppercase">
+                  <textPath href="#circlePath" startOffset="0%" textLength="213" lengthAdjust="spacing">
+                    MAWADDAH • MAWADDAH • 
+                  </textPath>
+                </text>
+              </svg>
+            </div>
+            
+            <div className="hidden md:flex items-center space-x-8">
+              <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className={`text-sm font-medium uppercase tracking-wider transition-colors ${activeSection === 'about' ? 'text-accent' : 'text-primary/80 hover:text-accent'}`}>About Us</a>
+              <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className={`text-sm font-medium uppercase tracking-wider transition-colors ${activeSection === 'services' ? 'text-accent' : 'text-primary/80 hover:text-accent'}`}>Services</a>
+              <a href="#workshops" onClick={(e) => handleNavClick(e, 'workshops')} className={`text-sm font-medium uppercase tracking-wider transition-colors ${activeSection === 'workshops' ? 'text-accent' : 'text-primary/80 hover:text-accent'}`}>Workshops</a>
+              <a href="#resources" onClick={(e) => handleNavClick(e, 'resources')} className={`text-sm font-medium uppercase tracking-wider transition-colors ${activeSection === 'resources' ? 'text-accent' : 'text-primary/80 hover:text-accent'}`}>Resources</a>
+              <button onClick={onOpenUserProfile} className="text-primary/80 hover:text-accent transition-colors text-sm font-medium uppercase tracking-wider flex items-center gap-1"><Users className="w-4 h-4"/> Dashboard</button>
+              <button onClick={toggleTheme} className="text-primary/80 hover:text-accent transition-colors flex items-center justify-center" aria-label="Toggle Theme">
+                {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
+              <a href="#booking" onClick={(e) => handleNavClick(e, 'booking')} className="bg-primary text-bg px-6 py-2.5 rounded-full text-sm font-medium hover:bg-primary-light transition-colors">
+                Book Consultation
+              </a>
+            </div>
 
-          <div className="md:hidden flex items-center">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-primary">
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
+            <div className="md:hidden flex items-center gap-3">
+              <button onClick={toggleTheme} className="text-primary hover:text-accent transition-colors" aria-label="Toggle Theme">
+                {isDark ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+              </button>
+              <button onClick={() => setIsOpen(!isOpen)} className="text-primary">
+                {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-surface border-t border-accent/20"
-          >
-            <div className="px-4 pt-2 pb-6 space-y-1">
-              <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className={`block px-3 py-3 text-base font-medium rounded-md ${activeSection === 'about' ? 'text-accent bg-accent/10' : 'text-primary hover:bg-accent/10'}`}>About Us</a>
-              <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className={`block px-3 py-3 text-base font-medium rounded-md ${activeSection === 'services' ? 'text-accent bg-accent/10' : 'text-primary hover:bg-accent/10'}`}>Services</a>
-              <a href="#workshops" onClick={(e) => handleNavClick(e, 'workshops')} className={`block px-3 py-3 text-base font-medium rounded-md ${activeSection === 'workshops' ? 'text-accent bg-accent/10' : 'text-primary hover:bg-accent/10'}`}>Workshops</a>
-              <a href="#resources" onClick={(e) => handleNavClick(e, 'resources')} className={`block px-3 py-3 text-base font-medium rounded-md ${activeSection === 'resources' ? 'text-accent bg-accent/10' : 'text-primary hover:bg-accent/10'}`}>Resources</a>
-              <button onClick={() => { onOpenUserProfile(); setIsOpen(false); }} className="w-full text-left flex items-center gap-2 px-3 py-3 text-base font-medium text-primary hover:bg-accent/10 rounded-md"><Users className="w-4 h-4"/> Profile</button>
-              <a href="#booking" onClick={(e) => handleNavClick(e, 'booking')} className="block px-3 py-3 text-base font-medium text-accent hover:bg-accent/10 rounded-md">Book Consultation</a>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+        {/* Mobile menu (Top dropdown for extra links) */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-surface border-t border-accent/20"
+            >
+              <div className="px-4 pt-2 pb-6 space-y-1">
+                <a href="#about" onClick={(e) => handleNavClick(e, 'about')} className={`block px-3 py-3 text-base font-medium rounded-md ${activeSection === 'about' ? 'text-accent bg-accent/10' : 'text-primary hover:bg-accent/10'}`}>About Us</a>
+                <a href="#resources" onClick={(e) => handleNavClick(e, 'resources')} className={`block px-3 py-3 text-base font-medium rounded-md ${activeSection === 'resources' ? 'text-accent bg-accent/10' : 'text-primary hover:bg-accent/10'}`}>Resources</a>
+                <a href="#booking" onClick={(e) => handleNavClick(e, 'booking')} className="block px-3 py-3 text-base font-medium text-accent hover:bg-accent/10 rounded-md">Book Consultation</a>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+
+      {/* Mobile Sticky Bottom Nav */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 z-50 glass-panel border-t border-primary/10 flex justify-between items-center px-6 py-2 pb-[calc(0.5rem+env(safe-area-inset-bottom))]">
+        <a href="#" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }} className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all ${!activeSection ? 'text-accent' : 'text-primary/60 hover:text-primary'}`}>
+          <Home className="w-6 h-6 mb-1" />
+          <span className="text-[10px] font-bold uppercase tracking-wider">Home</span>
+        </a>
+        <a href="#services" onClick={(e) => handleNavClick(e, 'services')} className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all ${activeSection === 'services' ? 'text-accent' : 'text-primary/60 hover:text-primary'}`}>
+          <HeartHandshake className="w-6 h-6 mb-1" />
+          <span className="text-[10px] font-bold uppercase tracking-wider">Services</span>
+        </a>
+        <a href="#workshops" onClick={(e) => handleNavClick(e, 'workshops')} className={`flex flex-col items-center justify-center p-2 rounded-xl transition-all ${activeSection === 'workshops' ? 'text-accent' : 'text-primary/60 hover:text-primary'}`}>
+          <BookOpen className="w-6 h-6 mb-1" />
+          <span className="text-[10px] font-bold uppercase tracking-wider">Workshops</span>
+        </a>
+        <button onClick={onOpenUserProfile} className="flex flex-col items-center justify-center p-2 rounded-xl transition-all text-primary/60 hover:text-primary">
+          <Users className="w-6 h-6 mb-1" />
+          <span className="text-[10px] font-bold uppercase tracking-wider">Dashboard</span>
+        </button>
+      </div>
+    </>
   );
 };
 
@@ -398,7 +444,7 @@ const OurSheikhs = () => {
       name: "Shaykh Ahmad",
       specialization: "Islamic Law & Family Counseling",
       bio: "With over a decade of experience in community leadership and pastoral care, Shaykh Ahmad specializes in bridging classical Islamic knowledge with modern psychological insights to help families thrive.",
-      image: "https://images.unsplash.com/photo-1584483756059-00911761d491?q=80&w=2000&auto=format&fit=crop",
+      image: "/sheikh_profile.png",
       qualifications: [
         "Qur’anic Ijazah with an unbroken sanad to the Prophet ﷺ",
         "Graduate researcher in Islamic Law",
@@ -410,7 +456,14 @@ const OurSheikhs = () => {
         "Fiqh (Islamic Jurisprudence) - Practical application of Islamic law in modern contexts",
         "Seerah (Prophetic Biography) - Extracting life lessons from the Prophet ﷺ",
         "Family Counseling - Resolving marital disputes using Islamic principles"
-      ]
+      ],
+      fees: {
+        baseRate: "$19.99/hr",
+        variations: [
+          { type: "Pre-Marital Counseling", rate: "$24.99/hr" },
+          { type: "Divorce Arbitration", rate: "$29.99/hr" }
+        ]
+      }
     }
   ];
 
@@ -493,20 +546,28 @@ const OurSheikhs = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.2 }}
-              className="bg-surface rounded-3xl overflow-hidden shadow-sm border border-primary/5 flex flex-col md:flex-row hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
+              className="bg-surface rounded-3xl p-8 shadow-sm border border-primary/5 flex flex-col md:flex-row gap-8 lg:gap-12 hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
             >
-              <div className="md:w-2/5 relative h-64 md:h-auto">
-                <img 
-                  src={sheikh.image} 
-                  alt={sheikh.name} 
-                  className="absolute inset-0 w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
+              <div className="md:w-1/3 lg:w-1/4 flex flex-col items-center text-center shrink-0">
+                <div className="w-48 h-48 sm:w-56 sm:h-56 rounded-full overflow-hidden mb-6 border-4 border-primary/10 relative">
+                  <img 
+                    src={sheikh.image} 
+                    alt={sheikh.name} 
+                    className="absolute inset-0 w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+                <h3 className="font-serif text-2xl text-primary mb-1">{sheikh.name}</h3>
+                <p className="text-accent font-medium text-sm mb-6">{sheikh.specialization}</p>
+                <button 
+                  onClick={() => handleBookSheikh(sheikh.name)}
+                  className="hidden md:flex w-full bg-accent hover:bg-accent-light text-bg py-3 rounded-xl text-sm font-bold transition-colors items-center justify-center gap-2"
+                >
+                  <Calendar className="w-4 h-4" /> Check Availability
+                </button>
               </div>
-              <div className="p-8 md:w-3/5 flex flex-col justify-between">
+              <div className="md:w-2/3 lg:w-3/4 flex flex-col justify-start">
                 <div>
-                  <h3 className="font-serif text-2xl text-primary mb-1">{sheikh.name}</h3>
-                  <p className="text-accent font-medium text-sm mb-4">{sheikh.specialization}</p>
                   <p className="text-primary/70 text-sm mb-6 leading-relaxed">{sheikh.bio}</p>
                   
                   <div className="mb-6">
@@ -536,11 +597,38 @@ const OurSheikhs = () => {
                       </ul>
                     </div>
                   )}
+
+                  {sheikh.fees && (
+                    <div className="mb-8 bg-primary/5 rounded-2xl p-5 border border-primary/10">
+                      <h4 className="text-sm font-bold text-primary mb-3 flex items-center gap-2">
+                        <Wallet className="w-4 h-4 text-accent" /> Consultation Fees
+                      </h4>
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center bg-bg px-4 py-2 rounded-xl">
+                          <span className="text-sm text-primary/80">Base Rate</span>
+                          <span className="font-bold text-primary">{sheikh.fees.baseRate}</span>
+                        </div>
+                        {sheikh.fees.variations.length > 0 && (
+                          <div className="pt-2">
+                            <span className="text-xs uppercase tracking-wider font-bold text-primary/50 mb-2 block">Specialized Rates</span>
+                            <div className="space-y-2">
+                              {sheikh.fees.variations.map((variation, i) => (
+                                <div key={i} className="flex justify-between items-center text-sm">
+                                  <span className="text-primary/70">{variation.type}</span>
+                                  <span className="font-bold text-primary">{variation.rate}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )}
                 </div>
                 
                 <button 
                   onClick={() => handleBookSheikh(sheikh.name)}
-                  className="w-full bg-primary/5 hover:bg-primary/10 text-primary py-3 rounded-xl text-sm font-bold transition-colors flex items-center justify-center gap-2"
+                  className="md:hidden w-full bg-accent hover:bg-accent-light text-bg py-3 rounded-xl text-sm font-bold transition-colors flex items-center justify-center gap-2"
                 >
                   <Calendar className="w-4 h-4" /> Check Availability
                 </button>
@@ -777,7 +865,8 @@ const Workshops = () => {
       image: "https://images.unsplash.com/photo-1609599006353-e629aaab315f?q=80&w=2000&auto=format&fit=crop",
       outline: ["Rights and Responsibilities", "The Marriage Contract (Nikah)", "Financial Obligations (Mahr & Nafaqah)", "Intimacy in Islam"],
       expectedResults: "A comprehensive understanding of the legal and spiritual framework of an Islamic marriage, protecting you from common pitfalls.",
-      mindset: "Open to learning, ready to unlearn cultural misconceptions, and committed to following the Sunnah."
+      mindset: "Open to learning, ready to unlearn cultural misconceptions, and committed to following the Sunnah.",
+      price: "$49"
     },
     {
       title: "Navigating the First Year",
@@ -787,7 +876,8 @@ const Workshops = () => {
       image: "https://images.unsplash.com/photo-1564121211835-e88c852648ab?q=80&w=2000&auto=format&fit=crop",
       outline: ["Managing Expectations", "Effective Communication", "Dealing with In-laws", "Establishing a God-conscious Home"],
       expectedResults: "Practical tools to build a strong foundation of Mawaddah (affection) and Rahmah (mercy) during the critical first year.",
-      mindset: "Patience, empathy, and a willingness to compromise and grow together."
+      mindset: "Patience, empathy, and a willingness to compromise and grow together.",
+      price: "$149"
     },
     {
       title: "Prophetic Parenting (Tarbiyah)",
@@ -797,7 +887,8 @@ const Workshops = () => {
       image: "https://images.unsplash.com/photo-1511895426328-dc8714191300?q=80&w=2000&auto=format&fit=crop",
       outline: ["The Fitrah of a Child", "Discipline vs. Punishment", "Instilling Love for Allah", "Navigating Screen Time & Modern Challenges"],
       expectedResults: "A clear, actionable parenting strategy modeled after the Prophet ﷺ's gentle and effective approach.",
-      mindset: "Self-reflective, gentle, and dedicated to being a positive role model."
+      mindset: "Self-reflective, gentle, and dedicated to being a positive role model.",
+      price: "$89"
     },
     {
       title: "Conflict Resolution in Islam",
@@ -807,7 +898,8 @@ const Workshops = () => {
       image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?q=80&w=2000&auto=format&fit=crop",
       outline: ["The Etiquette of Disagreement", "Controlling Anger", "The Role of a Mediator", "Forgiveness and Moving Forward"],
       expectedResults: "Mastery over emotional reactivity and the ability to resolve disputes without damaging the relationship.",
-      mindset: "Humble, ready to admit faults, and prioritizing peace over 'being right'."
+      mindset: "Humble, ready to admit faults, and prioritizing peace over 'being right'.",
+      price: "$35"
     },
     {
       title: "Financial Harmony in Marriage",
@@ -817,7 +909,8 @@ const Workshops = () => {
       image: "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?q=80&w=2000&auto=format&fit=crop",
       outline: ["Islamic Rights regarding Wealth", "Budgeting as a Couple", "Dealing with Debt", "Barakah in Earnings"],
       expectedResults: "A unified financial plan that respects Islamic boundaries and eliminates money-related marital stress.",
-      mindset: "Transparent, responsible, and trusting in Allah's provision (Tawakkul)."
+      mindset: "Transparent, responsible, and trusting in Allah's provision (Tawakkul).",
+      price: "$49"
     },
     {
       title: "Healing from Trauma",
@@ -827,7 +920,8 @@ const Workshops = () => {
       image: "https://images.unsplash.com/photo-1499209974431-9dddcece7f88?q=80&w=2000&auto=format&fit=crop",
       outline: ["Understanding Trauma", "The Islamic Perspective on Hardship", "Coping Mechanisms", "Seeking Professional Help"],
       expectedResults: "A safe space to begin the healing process, equipped with spiritual and psychological tools for recovery.",
-      mindset: "Courageous, vulnerable, and hopeful in Allah's mercy and healing."
+      mindset: "Courageous, vulnerable, and hopeful in Allah's mercy and healing.",
+      price: "$120"
     },
     {
       title: "Preparing for Parenthood",
@@ -837,7 +931,8 @@ const Workshops = () => {
       image: "https://images.unsplash.com/photo-1519689680058-324335c77eba?q=80&w=2000&auto=format&fit=crop",
       outline: ["Spiritual Preparation for Pregnancy", "Rights of the Newborn", "Maintaining the Marriage Post-Baby", "Building a Support System"],
       expectedResults: "Confidence and spiritual readiness to welcome a new soul into your family.",
-      mindset: "Excited, prayerful, and ready to embrace a major life transition."
+      mindset: "Excited, prayerful, and ready to embrace a major life transition.",
+      price: "$149"
     }
   ];
 
@@ -1021,36 +1116,53 @@ const Workshops = () => {
               <div 
                 key={idx} 
                 onClick={() => setSelectedWorkshop(workshop)}
-                className="group cursor-pointer rounded-3xl overflow-hidden relative aspect-[4/5] shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col justify-end"
+                className="group cursor-pointer rounded-3xl border border-primary/10 bg-surface shadow-sm hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 p-8 flex flex-col h-full relative overflow-hidden"
               >
-                <img 
-                  src={workshop.image} 
-                  alt={workshop.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/60 to-transparent"></div>
-                <div className="relative z-10 p-6 sm:p-8 w-full transform transition-transform duration-500 group-hover:-translate-y-2">
-                  <div className="flex flex-wrap items-center gap-3 mb-4">
-                    <span className="bg-accent text-bg text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
-                      {workshop.type}
-                    </span>
-                    <span className="text-surface/90 text-sm flex items-center gap-1 font-medium">
-                      <Calendar className="w-4 h-4" /> {workshop.date}
-                    </span>
-                  </div>
-                  <h3 className="font-serif text-2xl text-surface mb-4 leading-tight">{workshop.title}</h3>
-                  <div className="flex gap-3 mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <button 
-                      onClick={(e) => handleBookNow(e, workshop)}
-                      className="flex-1 bg-accent hover:bg-accent-light text-bg py-3 rounded-xl text-sm font-bold transition-colors text-center"
-                    >
-                      Book Now
-                    </button>
-                    <button className="flex-1 bg-surface/20 hover:bg-surface/30 backdrop-blur-sm text-surface py-3 rounded-xl text-sm font-bold transition-colors text-center border border-surface/20">
-                      Details
-                    </button>
-                  </div>
+                {/* Decorative Elements */}
+                <div className="absolute top-0 right-0 w-32 h-32 bg-accent/5 rounded-bl-[100px] -z-10 transition-transform duration-500 group-hover:scale-[1.5]"></div>
+                <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-accent to-accent-light scale-x-0 origin-left transition-transform duration-500 group-hover:scale-x-100"></div>
+                
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-6">
+                  <span className="bg-accent text-bg text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-sm">
+                    {workshop.type}
+                  </span>
+                  <span className="text-primary/70 text-sm flex items-center gap-1.5 font-medium px-3 py-1 rounded-full border border-primary/10 bg-bg/50">
+                    <Calendar className="w-4 h-4 text-accent" /> {workshop.date}
+                  </span>
+                </div>
+                
+                <div className="mb-4 relative">
+                  <h3 className="font-serif text-2xl text-primary leading-tight group-hover:text-accent transition-colors duration-300 pr-8">{workshop.title}</h3>
+                  <ArrowRight className="w-5 h-5 text-accent absolute top-1 right-0 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300" />
+                </div>
+
+                <p className="text-primary/60 text-sm mb-6 flex-grow leading-relaxed line-clamp-3">
+                  {workshop.expectedResults}
+                </p>
+                
+                <div className="flex flex-col gap-4 mt-auto pt-6 border-t border-primary/10">
+                   <div className="flex justify-between items-end">
+                     <div className="flex flex-col">
+                       <span className="text-xs text-primary/50 uppercase tracking-wider mb-0.5">Registration</span>
+                       <div className="text-2xl font-bold text-primary flex items-baseline gap-1">
+                        {workshop.price}
+                       </div>
+                     </div>
+                     <div className="flex gap-2">
+                       <button 
+                         onClick={(e) => { e.stopPropagation(); setSelectedWorkshop(workshop); }}
+                         className="bg-primary/5 hover:bg-primary/10 text-primary px-5 py-2.5 rounded-xl text-sm font-bold transition-colors"
+                       >
+                         Details
+                       </button>
+                       <button 
+                         onClick={(e) => handleBookNow(e, workshop)}
+                         className="bg-accent hover:bg-accent-light text-bg px-5 py-2.5 rounded-xl text-sm font-bold transition-all shadow hover:shadow-md transform active:scale-95"
+                       >
+                         Enroll
+                       </button>
+                     </div>
+                   </div>
                 </div>
               </div>
             ))}
@@ -1072,61 +1184,128 @@ const Workshops = () => {
               initial={{ y: 50, opacity: 0, scale: 0.95 }}
               animate={{ y: 0, opacity: 1, scale: 1 }}
               exit={{ y: 20, opacity: 0, scale: 0.95 }}
-              className="bg-bg w-full max-w-2xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl relative z-10"
+              className="bg-bg w-full max-w-5xl max-h-[90vh] overflow-y-auto rounded-3xl shadow-2xl relative z-10 flex flex-col"
             >
-              <div className="sticky top-0 bg-bg/90 backdrop-blur-md border-b border-primary/10 p-4 sm:p-6 flex justify-between items-center z-20">
-                <span className="text-accent text-xs font-bold uppercase tracking-wider">{selectedWorkshop.type}</span>
-                <button 
-                  onClick={() => setSelectedWorkshop(null)}
-                  className="w-10 h-10 rounded-full bg-primary/5 hover:bg-primary/10 flex items-center justify-center text-primary transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
+              <button 
+                onClick={() => setSelectedWorkshop(null)}
+                className="absolute top-4 right-4 z-30 w-10 h-10 rounded-full bg-primary/5 border border-primary/10 hover:bg-primary/10 flex items-center justify-center text-primary transition-colors shadow-sm"
+              >
+                <X className="w-5 h-5" />
+              </button>
               
-              <div className="p-6 sm:p-10">
-                <h2 className="font-serif text-3xl sm:text-4xl text-primary mb-4 leading-tight">{selectedWorkshop.title}</h2>
-                <div className="flex items-center gap-2 text-primary/60 text-sm mb-8 pb-8 border-b border-primary/10">
-                  <Calendar className="w-5 h-5 text-accent" />
-                  <span className="font-medium text-primary">{selectedWorkshop.date}</span>
+              {/* Course Header / Hero Banner without Image */}
+              <div className="bg-primary text-bg p-8 md:p-16 relative overflow-hidden rounded-t-3xl">
+                <div className="absolute top-0 right-0 w-64 h-64 bg-accent/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3"></div>
+                <div className="relative z-10">
+                  <div className="flex flex-wrap gap-3 mb-6">
+                    <span className="bg-accent text-bg text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+                      {selectedWorkshop.type}
+                    </span>
+                    <span className="bg-bg/20 backdrop-blur-sm text-bg text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1 border border-bg/20">
+                      <Star className="w-3 h-3 text-yellow-400 fill-yellow-400" /> 4.9 (120+ ratings)
+                    </span>
+                  </div>
+                  <h2 className="font-serif text-3xl md:text-5xl leading-tight mb-6 max-w-3xl">
+                    {selectedWorkshop.title}
+                  </h2>
+                  <p className="text-bg/80 text-lg max-w-2xl leading-relaxed">
+                    {selectedWorkshop.expectedResults}
+                  </p>
                 </div>
+              </div>
 
-                <div className="space-y-8">
-                  <div>
-                    <h3 className="text-lg font-bold text-primary mb-3 flex items-center gap-2">
-                      <BookOpen className="w-5 h-5 text-accent" /> Course Outline
-                    </h3>
-                    <ul className="space-y-2">
+              {/* Course Body bg-surface instead of bg-bg to contrast with header */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 p-6 md:p-12 z-20 relative bg-bg">
+                
+                {/* Main Content */}
+                <div className="lg:col-span-2 space-y-10">
+                  {/* What you'll learn */}
+                  <div className="bg-surface border border-primary/5 p-6 rounded-2xl">
+                    <h3 className="text-xl font-bold text-primary mb-4">What you'll learn</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       {selectedWorkshop.outline.map((item: string, i: number) => (
-                        <li key={i} className="flex items-start gap-2 text-primary/80">
-                          <span className="text-accent font-bold mt-0.5">•</span> {item}
-                        </li>
+                         <div key={i} className="flex gap-3 text-primary/80">
+                           <Check className="w-5 h-5 text-accent shrink-0" />
+                           <span className="text-sm">{item}</span>
+                         </div>
                       ))}
+                      <div className="flex gap-3 text-primary/80">
+                        <Check className="w-5 h-5 text-accent shrink-0" />
+                        <span className="text-sm">Apply prophetic wisdom to modern challenges</span>
+                      </div>
+                      <div className="flex gap-3 text-primary/80">
+                        <Check className="w-5 h-5 text-accent shrink-0" />
+                        <span className="text-sm">Build stronger, spiritually grounded relationships</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Course Content / Curriculum */}
+                  <div>
+                    <h3 className="text-2xl font-bold text-primary mb-4">Course Content</h3>
+                    <p className="text-sm text-primary/60 mb-4">{selectedWorkshop.outline.length} sections • {selectedWorkshop.outline.length * 2} modules • 4h 30m total length</p>
+                    <div className="border border-primary/10 rounded-2xl overflow-hidden bg-bg text-primary">
+                      {selectedWorkshop.outline.map((item: string, i: number) => (
+                        <details key={i} className={`group ${i !== selectedWorkshop.outline.length - 1 ? 'border-b border-primary/10' : ''}`} open={i === 0}>
+                          <summary className="cursor-pointer bg-surface/50 hover:bg-surface p-4 font-medium flex justify-between items-center transition-colors">
+                            <span className="flex items-center gap-3">
+                              <ChevronDown className="w-4 h-4 group-open:rotate-180 transition-transform" />
+                              Section {i + 1}: {item}
+                            </span>
+                            <span className="text-xs font-normal text-primary/60">2 lectures • 45m</span>
+                          </summary>
+                          <div className="p-4 bg-bg space-y-3">
+                            <div className="flex justify-between items-start text-sm text-primary/80 hover:text-accent cursor-pointer">
+                              <span className="flex items-center gap-3"><Play className="w-4 h-4 text-primary/40" /> Introduction to {item}</span>
+                              <span className="text-xs text-accent">Preview</span>
+                            </div>
+                            <div className="flex justify-between items-start text-sm text-primary/80 hover:text-accent cursor-pointer">
+                              <span className="flex items-center gap-3"><Play className="w-4 h-4 text-primary/40" /> Practical Applications</span>
+                              <span className="text-xs">25:00</span>
+                            </div>
+                          </div>
+                        </details>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Requirements */}
+                  <div>
+                    <h3 className="text-2xl font-bold text-primary mb-4">Requirements & Mindset</h3>
+                    <ul className="list-disc list-inside text-primary/80 space-y-2">
+                       <li>{selectedWorkshop.mindset}</li>
+                       <li>Basic understanding of Islamic principles is helpful but not required.</li>
+                       <li>A notebook and pens for taking notes during interactive sessions.</li>
                     </ul>
                   </div>
-
-                  <div>
-                    <h3 className="text-lg font-bold text-primary mb-3 flex items-center gap-2">
-                      <Star className="w-5 h-5 text-accent" /> Expected Results
-                    </h3>
-                    <p className="text-primary/80 leading-relaxed">{selectedWorkshop.expectedResults}</p>
-                  </div>
-
-                  <div>
-                    <h3 className="text-lg font-bold text-primary mb-3 flex items-center gap-2">
-                      <HeartHandshake className="w-5 h-5 text-accent" /> Required Mindset
-                    </h3>
-                    <p className="text-primary/80 leading-relaxed">{selectedWorkshop.mindset}</p>
-                  </div>
                 </div>
 
-                <div className="mt-10 pt-8 border-t border-primary/10">
-                  <button 
-                    onClick={(e) => handleBookNow(e, selectedWorkshop)}
-                    className="w-full bg-accent text-bg py-4 rounded-xl font-bold text-lg hover:bg-accent-light transition-colors flex items-center justify-center gap-2"
-                  >
-                    Book Your Spot Now
-                  </button>
+                {/* Sidebar Widget (Sticky) */}
+                <div className="lg:col-span-1">
+                  <div className="sticky top-6 bg-surface border border-primary/10 rounded-3xl p-6 shadow-xl">
+                    <div className="text-4xl font-bold text-primary mb-2">
+                      {selectedWorkshop.price}
+                    </div>
+                    <div className="flex items-center gap-2 text-primary/60 text-sm mb-6">
+                      <Calendar className="w-4 h-4" /> Next Session: <strong className="text-primary">{selectedWorkshop.date}</strong>
+                    </div>
+
+                    <button 
+                      onClick={(e) => handleBookNow(e, selectedWorkshop)}
+                      className="w-full bg-accent text-bg py-4 rounded-xl font-bold text-lg hover:bg-[#A88B63] transition-colors flex items-center justify-center gap-2 mb-4"
+                    >
+                      Enroll Now
+                    </button>
+                    <p className="text-xs text-center text-primary/50 mb-6">30-Day Money-Back Guarantee</p>
+
+                    <div className="space-y-4">
+                      <h4 className="font-bold text-primary text-sm uppercase tracking-wider mb-2">This course includes:</h4>
+                      <div className="flex items-center gap-3 text-sm text-primary/80"><MonitorPlay className="w-5 h-5 text-primary/40" /> 4 hours on-demand video</div>
+                      <div className="flex items-center gap-3 text-sm text-primary/80"><FileText className="w-5 h-5 text-primary/40" /> 12 downloadable resources</div>
+                      <div className="flex items-center gap-3 text-sm text-primary/80"><Infinity className="w-5 h-5 text-primary/40" /> Full lifetime access</div>
+                      <div className="flex items-center gap-3 text-sm text-primary/80"><Award className="w-5 h-5 text-primary/40" /> Certificate of completion</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -1170,25 +1349,59 @@ const Workshops = () => {
                     <span className="font-medium">Confirmed! Redirecting...</span>
                   </motion.div>
                 ) : (
-                  <motion.div 
+                  <motion.form 
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="flex gap-3"
+                    className="space-y-4"
+                    onSubmit={(e) => { e.preventDefault(); confirmWorkshopBooking(); }}
                   >
-                    <button 
-                      onClick={() => setConfirmingWorkshop(null)}
-                      className="flex-1 py-3 rounded-xl font-bold text-primary border border-primary/20 hover:bg-primary/5 transition-colors"
-                    >
-                      Cancel
-                    </button>
-                    <button 
-                      onClick={confirmWorkshopBooking}
-                      className="flex-1 bg-accent hover:bg-accent-light text-bg py-3 rounded-xl font-bold transition-colors"
-                    >
-                      Confirm
-                    </button>
-                  </motion.div>
+                    <div className="flex justify-between items-center py-3 border-b border-primary/10 mb-4">
+                      <span className="text-primary/70">Registration Fee</span>
+                      <span className="font-bold text-accent">{confirmingWorkshop.price}</span>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs uppercase tracking-wide text-primary/70 mb-1">Card Details (Simulation)</label>
+                      <div className="relative">
+                        <input 
+                          type="text" 
+                          placeholder="0000 0000 0000 0000" 
+                          required
+                          className="w-full px-4 py-3 rounded-xl border border-primary/20 focus:outline-none focus:border-accent bg-surface font-mono"
+                          maxLength={19}
+                        />
+                        <div className="absolute right-3 top-3 flex gap-1">
+                          <div className="w-8 h-5 bg-red-400/20 rounded"></div>
+                          <div className="w-8 h-5 bg-yellow-400/20 rounded"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 mb-6">
+                      <div>
+                        <input type="text" placeholder="MM/YY" required className="w-full px-4 py-3 rounded-xl border border-primary/20 focus:outline-none focus:border-accent bg-surface font-mono" maxLength={5} />
+                      </div>
+                      <div>
+                        <input type="text" placeholder="CVC" required className="w-full px-4 py-3 rounded-xl border border-primary/20 focus:outline-none focus:border-accent bg-surface font-mono" maxLength={4} />
+                      </div>
+                    </div>
+
+                    <div className="flex gap-3">
+                      <button 
+                        type="button"
+                        onClick={() => setConfirmingWorkshop(null)}
+                        className="flex-1 py-3 rounded-xl font-bold text-primary border border-primary/20 hover:bg-primary/5 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <button 
+                        type="submit"
+                        className="flex-1 bg-accent hover:bg-accent-light text-bg py-3 rounded-xl font-bold transition-colors flex items-center justify-center gap-2"
+                      >
+                        <Lock className="w-4 h-4" /> Pay & Confirm
+                      </button>
+                    </div>
+                  </motion.form>
                 )}
               </AnimatePresence>
             </motion.div>
@@ -1205,7 +1418,38 @@ const Resources = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [hasFinishedReading, setHasFinishedReading] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [savedResourceIds, setSavedResourceIds] = useState<string[]>([]);
   const scrollRef = React.useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('mawaddah_saved_resources');
+    if (stored) {
+      setSavedResourceIds(JSON.parse(stored));
+    }
+    
+    const handleStorageChange = () => {
+      const updated = localStorage.getItem('mawaddah_saved_resources');
+      if (updated) {
+        setSavedResourceIds(JSON.parse(updated));
+      }
+    };
+    window.addEventListener('mawaddah_saved_resources_changed', handleStorageChange);
+    return () => window.removeEventListener('mawaddah_saved_resources_changed', handleStorageChange);
+  }, []);
+
+  const toggleSaveArticle = (e: React.MouseEvent, title: string) => {
+    e.stopPropagation();
+    let newSaved;
+    if (savedResourceIds.includes(title)) {
+      newSaved = savedResourceIds.filter(id => id !== title);
+    } else {
+      newSaved = [...savedResourceIds, title];
+    }
+    setSavedResourceIds(newSaved);
+    localStorage.setItem('mawaddah_saved_resources', JSON.stringify(newSaved));
+    window.dispatchEvent(new Event('mawaddah_saved_resources_changed'));
+  };
 
   const filteredArticles = articles.filter(article => {
     const matchesCategory = selectedCategory === 'All' || article.category === selectedCategory;
@@ -1223,15 +1467,22 @@ const Resources = () => {
   useEffect(() => {
     if (selectedArticle) {
       setHasFinishedReading(false);
+      setScrollProgress(0);
     }
   }, [selectedArticle]);
 
   const handleScroll = () => {
-    if (!scrollRef.current || hasFinishedReading) return;
+    if (!scrollRef.current) return;
     
     const { scrollTop, scrollHeight, clientHeight } = scrollRef.current;
+    
+    // Calculate progress
+    const maxScroll = scrollHeight - clientHeight;
+    const progress = maxScroll > 0 ? (scrollTop / maxScroll) * 100 : 0;
+    setScrollProgress(progress);
+
     // Check if user has scrolled to bottom (with a small 10px buffer)
-    if (scrollTop + clientHeight >= scrollHeight - 10) {
+    if (!hasFinishedReading && scrollTop + clientHeight >= scrollHeight - 10) {
       setHasFinishedReading(true);
     }
   };
@@ -1289,27 +1540,52 @@ const Resources = () => {
             </div>
 
             <div className="space-y-6">
-              {filteredArticles.slice(0, visibleCount).map((article, idx) => (
-                <div 
-                  key={idx} 
-                  onClick={() => setSelectedArticle(article)}
-                  className="group block p-6 rounded-2xl border border-primary/10 hover:border-accent/50 hover:bg-bg transition-all cursor-pointer shadow-sm hover:shadow-md"
-                >
-                  <div className="flex justify-between items-start gap-4">
-                    <div>
-                      <span className="text-accent text-xs font-bold uppercase tracking-wider mb-2 block">{article.category}</span>
-                      <h3 className="font-serif text-xl text-primary group-hover:text-accent transition-colors mb-2">{article.title}</h3>
-                      <p className="text-primary/70 text-sm mb-4 line-clamp-2">{article.excerpt}</p>
-                      <span className="text-primary/50 text-sm flex items-center gap-1">
-                        <Clock className="w-4 h-4" /> {article.readTime}
-                      </span>
-                    </div>
-                    <div className="w-10 h-10 shrink-0 rounded-full bg-surface border border-primary/10 flex items-center justify-center group-hover:bg-accent group-hover:border-accent group-hover:text-bg transition-all">
-                      <ChevronRight className="w-5 h-5" />
+              {filteredArticles.length > 0 ? (
+                filteredArticles.slice(0, visibleCount).map((article, idx) => (
+                  <div 
+                    key={idx} 
+                    onClick={() => setSelectedArticle(article)}
+                    className="group block p-6 rounded-2xl border border-primary/10 hover:border-accent/50 hover:bg-bg transition-all cursor-pointer shadow-sm hover:shadow-md"
+                  >
+                    <div className="flex justify-between items-start gap-4">
+                      <div>
+                        <span className="text-accent text-xs font-bold uppercase tracking-wider mb-2 block">{article.category}</span>
+                        <h3 className="font-serif text-xl text-primary group-hover:text-accent transition-colors mb-2">{article.title}</h3>
+                        <p className="text-primary/70 text-sm mb-4 line-clamp-2">{article.excerpt}</p>
+                        <span className="text-primary/50 text-sm flex items-center gap-1">
+                          <Clock className="w-4 h-4" /> {article.readTime}
+                        </span>
+                      </div>
+                      <div className="flex flex-col gap-2 shrink-0">
+                        <button 
+                          onClick={(e) => toggleSaveArticle(e, article.title)}
+                          className={`w-10 h-10 rounded-full border flex items-center justify-center transition-all ${savedResourceIds.includes(article.title) ? 'bg-accent/10 border-accent/20 text-accent' : 'bg-surface border-primary/10 text-primary/40 hover:text-accent'}`}
+                        >
+                          <Bookmark className={`w-5 h-5 ${savedResourceIds.includes(article.title) ? 'fill-accent' : ''}`} />
+                        </button>
+                        <div className="w-10 h-10 rounded-full bg-surface border border-primary/10 flex items-center justify-center group-hover:bg-accent group-hover:border-accent group-hover:text-bg transition-all">
+                          <ChevronRight className="w-5 h-5" />
+                        </div>
+                      </div>
                     </div>
                   </div>
+                ))
+              ) : (
+                <div className="text-center py-12 bg-surface rounded-2xl border border-primary/10">
+                  <Search className="w-12 h-12 text-primary/20 mx-auto mb-4" />
+                  <h3 className="text-xl font-serif text-primary mb-2">No Resources Found</h3>
+                  <p className="text-primary/60">We couldn't find any articles matching your search criteria.</p>
+                  <button 
+                    onClick={() => {
+                      setSearchQuery('');
+                      setSelectedCategory('All');
+                    }}
+                    className="mt-6 text-accent font-medium hover:text-accent-light transition-colors"
+                  >
+                    Clear Search Filters
+                  </button>
                 </div>
-              ))}
+              )}
             </div>
             
             {visibleCount < filteredArticles.length && (
@@ -1346,12 +1622,22 @@ const Resources = () => {
             >
               <div className="sticky top-0 bg-bg/90 backdrop-blur-md border-b border-primary/10 p-4 sm:p-6 flex justify-between items-center z-20">
                 <span className="text-accent text-xs font-bold uppercase tracking-wider">{selectedArticle.category}</span>
-                <button 
-                  onClick={() => setSelectedArticle(null)}
-                  className="w-10 h-10 rounded-full bg-primary/5 hover:bg-primary/10 flex items-center justify-center text-primary transition-colors"
-                >
-                  <X className="w-5 h-5" />
-                </button>
+                <div className="flex gap-2">
+                  <button 
+                    onClick={(e) => toggleSaveArticle(e, selectedArticle.title)}
+                    className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${savedResourceIds.includes(selectedArticle.title) ? 'bg-accent/10 text-accent' : 'bg-primary/5 hover:bg-primary/10 text-primary'}`}
+                  >
+                    <Bookmark className={`w-5 h-5 ${savedResourceIds.includes(selectedArticle.title) ? 'fill-accent' : ''}`} />
+                  </button>
+                  <button 
+                    onClick={() => setSelectedArticle(null)}
+                    className="w-10 h-10 rounded-full bg-primary/5 hover:bg-primary/10 flex items-center justify-center text-primary transition-colors"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                {/* Scroll Progress Bar */}
+                <div className="absolute bottom-0 left-0 h-0.5 bg-accent origin-left" style={{ width: `${scrollProgress}%` }} />
               </div>
               <div className="p-6 sm:p-10">
                 <h2 className="font-serif text-3xl sm:text-4xl text-primary mb-4 leading-tight">{selectedArticle.title}</h2>
@@ -1569,7 +1855,7 @@ const FAQ = () => {
   );
 };
 
-const Booking = () => {
+const Booking = ({ onOpenUserProfile }: { onOpenUserProfile: () => void }) => {
   const [format, setFormat] = useState('Video Consultation');
   const [formData, setFormData] = useState({
     name: '',
@@ -1582,6 +1868,7 @@ const Booking = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [previewUrl, setPreviewUrl] = useState('');
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
 
   useEffect(() => {
     const handlePrefill = (e: any) => {
@@ -1597,9 +1884,14 @@ const Booking = () => {
     return () => window.removeEventListener('prefill-booking', handlePrefill);
   }, []);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleInitialSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setIsPaymentOpen(true);
+  };
+
+  const executeBooking = async () => {
     setIsSubmitting(true);
+    setIsPaymentOpen(false);
     try {
       const res = await fetch('/api/book', {
         method: 'POST',
@@ -1618,7 +1910,7 @@ const Booking = () => {
         // Save to localStorage
         const stored = localStorage.getItem('mawaddah_bookings');
         const bookings = stored ? JSON.parse(stored) : [];
-        const newBooking: BookingRecord = {
+        const newBooking = {
           id: Math.random().toString(36).substring(2, 9),
           type: formData.type,
           format: format,
@@ -1655,13 +1947,13 @@ const Booking = () => {
       </div>
       
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="bg-surface text-primary rounded-3xl p-8 md:p-12 shadow-2xl">
+        <div className="bg-surface text-primary rounded-3xl p-8 md:p-12 shadow-2xl relative">
           <div className="text-center mb-10">
             <h2 className="font-serif text-3xl md:text-4xl mb-4">Book a 1:1 Consultation</h2>
             <p className="text-primary/70">Schedule a private, confidential session with our qualified Sheikhs and counselors.</p>
           </div>
           
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-6" onSubmit={handleInitialSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label className="block text-sm font-medium text-primary/80 mb-2 uppercase tracking-wide text-xs">Full Name</label>
@@ -1738,6 +2030,16 @@ const Booking = () => {
                 />
               </div>
             </div>
+
+            <div className="bg-primary/5 border border-primary/10 rounded-xl p-4 flex justify-between items-center">
+              <div>
+                <h4 className="font-medium text-primary text-sm uppercase tracking-wide">Estimated Cost</h4>
+                <p className="text-primary/60 text-xs mt-1">Based on a standard 1-hour session. (Workshop prices vary)</p>
+              </div>
+              <div className="text-2xl font-bold text-accent">
+                {formData.type === 'Workshop Registration' ? "Varies" : "€20/hr"}
+              </div>
+            </div>
             
             <div>
               <label className="block text-sm font-medium text-primary/80 mb-2 uppercase tracking-wide text-xs">Briefly describe your situation</label>
@@ -1764,15 +2066,33 @@ const Booking = () => {
                 <motion.div 
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
-                  className="bg-green-50 text-green-800 p-4 rounded-xl mt-4 border border-green-200"
+                  className="bg-green-50 text-green-800 p-6 rounded-xl mt-4 border border-green-200"
                 >
-                  <p className="font-medium mb-1">Alhamdulillah! Your booking request has been received.</p>
-                  <p className="text-sm opacity-90">A confirmation email has been sent to {formData.email}.</p>
-                  {previewUrl && (
-                    <a href={previewUrl} target="_blank" rel="noreferrer" className="text-sm underline mt-2 inline-block text-green-700 hover:text-green-900">
-                      Preview Email (Test Mode)
-                    </a>
-                  )}
+                  <div className="flex items-start gap-4">
+                    <CheckCircle2 className="w-6 h-6 text-green-600 shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="font-bold text-lg mb-1 shadow-none">Alhamdulillah! Your booking request has been received.</h4>
+                      <p className="text-sm opacity-90 mb-4">A confirmation email has been sent to {formData.email}. We look forward to speaking with you.</p>
+                      <div className="flex flex-wrap gap-3">
+                        <button 
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            onOpenUserProfile();
+                            document.querySelector('nav')?.scrollIntoView({ behavior: 'smooth' });
+                          }}
+                          className="bg-green-600 text-bg px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-700 transition-colors"
+                        >
+                          View in Dashboard
+                        </button>
+                        {previewUrl && (
+                          <a href={previewUrl} target="_blank" rel="noreferrer" className="bg-bg text-green-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-green-50 transition-colors border border-green-200">
+                            Preview Email
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -1793,7 +2113,151 @@ const Booking = () => {
               )}
             </AnimatePresence>
           </form>
+
+          <AnimatePresence>
+            {isPaymentOpen && (
+              <motion.div 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="absolute inset-0 z-50 flex items-center justify-center p-4 sm:p-8 bg-surface rounded-3xl"
+              >
+                <div className="w-full max-w-md bg-bg p-8 rounded-2xl shadow-xl border border-primary/10">
+                  <h3 className="text-2xl font-serif text-primary mb-2 text-center">Secure Payment</h3>
+                  <p className="text-center text-primary/60 text-sm mb-6">Complete your booking securely via Stripe.</p>
+                  
+                  <div className="space-y-4 mb-8">
+                    <div className="flex justify-between items-center py-3 border-b border-primary/10">
+                      <span className="text-primary/70">Consultation Fee</span>
+                      <span className="font-bold text-accent">
+                        {formData.type === 'Workshop Registration' ? "Varies" : "€20/hr"}
+                      </span>
+                    </div>
+                  </div>
+
+                  <form onSubmit={(e) => { e.preventDefault(); executeBooking(); }} className="space-y-4">
+                    <div>
+                      <label className="block text-xs uppercase tracking-wide text-primary/70 mb-1">Card Details (Simulation)</label>
+                      <div className="relative">
+                        <input 
+                          type="text" 
+                          placeholder="0000 0000 0000 0000" 
+                          required
+                          className="w-full px-4 py-3 rounded-xl border border-primary/20 focus:outline-none focus:border-accent bg-surface font-mono"
+                          maxLength={19}
+                        />
+                        <div className="absolute right-3 top-3 flex gap-1">
+                          <div className="w-8 h-5 bg-red-400/20 rounded"></div>
+                          <div className="w-8 h-5 bg-yellow-400/20 rounded"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <input type="text" placeholder="MM/YY" required className="w-full px-4 py-3 rounded-xl border border-primary/20 focus:outline-none focus:border-accent bg-surface font-mono" maxLength={5} />
+                      </div>
+                      <div>
+                        <input type="text" placeholder="CVC" required className="w-full px-4 py-3 rounded-xl border border-primary/20 focus:outline-none focus:border-accent bg-surface font-mono" maxLength={4} />
+                      </div>
+                    </div>
+                    
+                    <div className="flex gap-3 pt-4">
+                      <button 
+                        type="button" 
+                        onClick={() => setIsPaymentOpen(false)}
+                        className="flex-1 py-3 rounded-xl font-bold text-primary border border-primary/20 hover:bg-primary/5 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <button 
+                        type="submit" 
+                        disabled={isSubmitting}
+                        className="flex-1 bg-accent text-bg py-3 rounded-xl font-bold hover:bg-[#A88B63] transition-all disabled:opacity-70 flex items-center justify-center gap-2"
+                      >
+                        {isSubmitting ? 'Processing...' : <><Lock className="w-4 h-4" /> Pay & Book</>}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
         </div>
+      </div>
+    </section>
+  );
+};
+
+const Newsletter = () => {
+  const [email, setEmail] = useState('');
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success'>('idle');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setStatus('submitting');
+    
+    // Simulate API call and store in local storage
+    setTimeout(() => {
+      const storedSubscribers = localStorage.getItem('mawaddah_newsletter') || '[]';
+      const subscribers = JSON.parse(storedSubscribers);
+      
+      if (!subscribers.includes(email)) {
+        subscribers.push(email);
+        localStorage.setItem('mawaddah_newsletter', JSON.stringify(subscribers));
+      }
+      
+      setStatus('success');
+      setEmail('');
+      
+      // Reset status after a few seconds
+      setTimeout(() => {
+        setStatus('idle');
+      }, 5000);
+    }, 800);
+  };
+
+  return (
+    <section className="py-20 bg-primary text-bg">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 className="font-serif text-3xl md:text-4xl mb-4 text-bg">Subscribe to Our Newsletter</h2>
+        <p className="text-bg/80 mb-8 max-w-2xl mx-auto">
+          Receive weekly insights on Islamic parenting, pre-marital guidance, and spiritual wellness directly in your inbox.
+        </p>
+        
+        <form onSubmit={handleSubmit} className="max-w-md mx-auto relative">
+          {status === 'success' ? (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-accent/20 border border-accent/40 text-accent-light p-4 rounded-xl flex items-center justify-center gap-2"
+            >
+              <CheckCircle2 className="w-5 h-5" />
+              <span className="font-medium">JazakAllah Khair! You have been subscribed.</span>
+            </motion.div>
+          ) : (
+            <div className="flex flex-col sm:flex-row gap-3">
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email address"
+                className="flex-1 px-4 py-3 rounded-xl border border-primary-light bg-primary-light/50 text-bg placeholder-bg/50 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent transition-all"
+                disabled={status === 'submitting'}
+              />
+              <button
+                type="submit"
+                disabled={status === 'submitting'}
+                className="bg-accent text-bg px-6 py-3 rounded-xl font-medium hover:bg-accent-light transition-colors disabled:opacity-70 disabled:cursor-not-allowed whitespace-nowrap"
+              >
+                {status === 'submitting' ? 'Subscribing...' : 'Subscribe'}
+              </button>
+            </div>
+          )}
+        </form>
       </div>
     </section>
   );
@@ -1843,7 +2307,7 @@ export type UserProfile = {
 
 const UserProfileModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => {
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
-  const [activeTab, setActiveTab] = useState<'profile' | 'consultations' | 'workshops' | 'security'>('profile');
+  const [activeTab, setActiveTab] = useState<'profile' | 'consultations' | 'workshops' | 'resources' | 'security'>('profile');
   const [profile, setProfile] = useState<UserProfile>({
     name: 'Abdullah Example',
     email: 'abdullah@example.com',
@@ -1852,12 +2316,20 @@ const UserProfileModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
     bio: ''
   });
   const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [savedResourceIds, setSavedResourceIds] = useState<string[]>([]);
   
   // 2FA State
   const [is2FAEnabled, setIs2FAEnabled] = useState(false);
   const [isSettingUp2FA, setIsSettingUp2FA] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [verificationError, setVerificationError] = useState('');
+
+  const loadSavedResources = () => {
+    const stored = localStorage.getItem('mawaddah_saved_resources');
+    if (stored) {
+      setSavedResourceIds(JSON.parse(stored));
+    }
+  };
 
   useEffect(() => {
     if (isOpen) {
@@ -1873,8 +2345,17 @@ const UserProfileModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
       if (stored2FA === 'enabled') {
         setIs2FAEnabled(true);
       }
+      loadSavedResources();
     }
-  }, [isOpen]);
+  }, [isOpen, activeTab]);
+
+  useEffect(() => {
+    const handleStorageChange = () => {
+      loadSavedResources();
+    };
+    window.addEventListener('mawaddah_saved_resources_changed', handleStorageChange);
+    return () => window.removeEventListener('mawaddah_saved_resources_changed', handleStorageChange);
+  }, []);
 
   const handleSaveProfile = () => {
     localStorage.setItem('mawaddah_profile', JSON.stringify(profile));
@@ -1902,6 +2383,19 @@ const UserProfileModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
     localStorage.removeItem('mawaddah_2fa');
   };
 
+  const calculateProfileCompletion = () => {
+    let completed = 0;
+    const total = 5;
+    if (profile.name?.trim()) completed++;
+    if (profile.email?.trim()) completed++;
+    if (profile.phone?.trim()) completed++;
+    if (profile.location?.trim()) completed++;
+    if (profile.bio?.trim()) completed++;
+    return Math.round((completed / total) * 100);
+  };
+
+  const profileCompletion = calculateProfileCompletion();
+
   const consultations = bookings.filter(b => b.type !== 'Workshop Registration');
   const workshops = bookings.filter(b => b.type === 'Workshop Registration');
 
@@ -1910,6 +2404,8 @@ const UserProfileModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
 
   const upcomingWorkshops = workshops.filter(b => b.status === 'upcoming').sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
   const pastWorkshops = workshops.filter(b => b.status === 'past').sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+  const savedArticles = articles.filter(a => savedResourceIds.includes(a.title));
 
   const renderBookingsList = (upcoming: BookingRecord[], past: BookingRecord[], emptyMessage: string) => {
     if (upcoming.length === 0 && past.length === 0) {
@@ -2011,7 +2507,7 @@ const UserProfileModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
             {/* Sidebar */}
             <div className="w-full md:w-64 bg-surface border-r border-primary/10 p-6 flex flex-col gap-2 shrink-0">
               <div className="flex justify-between items-center md:hidden mb-4">
-                <h2 className="font-serif text-2xl text-primary">My Profile</h2>
+                <h2 className="font-serif text-2xl text-primary">User Dashboard</h2>
                 <button 
                   onClick={onClose}
                   className="w-10 h-10 rounded-full bg-primary/5 hover:bg-primary/10 flex items-center justify-center text-primary transition-colors"
@@ -2020,8 +2516,27 @@ const UserProfileModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
                 </button>
               </div>
               
-              <div className="hidden md:block mb-8">
-                <h2 className="font-serif text-2xl text-primary">My Profile</h2>
+              <div className="hidden md:block mb-6">
+                <h2 className="font-serif text-2xl text-primary">User Dashboard</h2>
+              </div>
+
+              {/* Profile Completion */}
+              <div className="mb-6 px-2">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-xs font-bold uppercase tracking-wider text-primary/70">Profile Completion</span>
+                  <span className="text-xs font-bold text-accent">{profileCompletion}%</span>
+                </div>
+                <div className="w-full bg-primary/10 rounded-full h-1.5 mb-1 overflow-hidden">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: `${profileCompletion}%` }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    className="bg-accent h-1.5 rounded-full"
+                  ></motion.div>
+                </div>
+                {profileCompletion < 100 && (
+                  <p className="text-[10px] text-primary/50">Complete your profile to get the most out of Mawaddah.</p>
+                )}
               </div>
 
               <button 
@@ -2041,6 +2556,12 @@ const UserProfileModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors text-left ${activeTab === 'workshops' ? 'bg-accent text-bg' : 'text-primary/70 hover:bg-primary/5'}`}
               >
                 <BookOpen className="w-5 h-5" /> Workshops
+              </button>
+              <button 
+                onClick={() => setActiveTab('resources')}
+                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors text-left ${activeTab === 'resources' ? 'bg-accent text-bg' : 'text-primary/70 hover:bg-primary/5'}`}
+              >
+                <Bookmark className="w-5 h-5" /> Saved Resources
               </button>
               <button 
                 onClick={() => setActiveTab('security')}
@@ -2180,6 +2701,47 @@ const UserProfileModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
                 </div>
               )}
 
+              {activeTab === 'resources' && (
+                <div>
+                  <h3 className="font-serif text-2xl text-primary mb-8">Saved Resources</h3>
+                  {savedArticles.length === 0 ? (
+                    <div className="text-center py-12">
+                      <Bookmark className="w-12 h-12 text-primary/20 mx-auto mb-4" />
+                      <h3 className="text-xl font-serif text-primary mb-2">No Saved Resources</h3>
+                      <p className="text-primary/60">You haven't saved any articles yet.</p>
+                      <button 
+                        onClick={() => {
+                          onClose();
+                          document.getElementById('resources')?.scrollIntoView({ behavior: 'smooth' });
+                        }}
+                        className="mt-6 bg-accent text-bg px-6 py-2.5 rounded-full text-sm font-medium hover:bg-accent-light transition-colors inline-block"
+                      >
+                        Explore Knowledge Hub
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {savedArticles.map((article, idx) => (
+                        <div 
+                          key={idx} 
+                          className="group block p-5 rounded-2xl border border-primary/10 bg-surface hover:border-accent/50 transition-all cursor-pointer shadow-sm hover:shadow-md relative"
+                          onClick={() => {
+                            onClose();
+                            document.getElementById('resources')?.scrollIntoView({ behavior: 'smooth' });
+                          }}
+                        >
+                          <span className="text-accent text-xs font-bold uppercase tracking-wider mb-2 block">{article.category}</span>
+                          <h4 className="font-serif text-lg text-primary group-hover:text-accent transition-colors mb-2 line-clamp-2">{article.title}</h4>
+                          <span className="text-primary/50 text-xs flex items-center gap-1">
+                            <Clock className="w-3.5 h-3.5" /> {article.readTime}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
               {activeTab === 'security' && (
                 <div className="max-w-xl">
                   <h3 className="font-serif text-2xl text-primary mb-8">Security Settings</h3>
@@ -2205,7 +2767,7 @@ const UserProfileModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
                           </span>
                           <button 
                             onClick={handleDisable2FA}
-                            className="px-4 py-2 rounded-lg text-sm font-medium text-red-600 hover:bg-red-50 transition-colors"
+                            className="px-4 py-2 rounded-lg text-sm font-medium text-red-600 hover:bg-red-500/10 transition-colors"
                           >
                             Disable 2FA
                           </button>
@@ -2311,7 +2873,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-bg selection:bg-accent/30">
+    <div className="min-h-screen bg-bg selection:bg-accent/30 pb-20 md:pb-0">
       <Navbar onOpenUserProfile={() => setIsUserProfileOpen(true)} />
       <main>
         <Hero />
@@ -2323,8 +2885,9 @@ export default function App() {
         <Resources />
         <Testimonials />
         <FAQ />
-        <Booking />
+        <Booking onOpenUserProfile={() => setIsUserProfileOpen(true)} />
       </main>
+      <Newsletter />
       <Footer />
       <UserProfileModal isOpen={isUserProfileOpen} onClose={() => setIsUserProfileOpen(false)} />
     </div>
